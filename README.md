@@ -27,3 +27,12 @@ optional arguments:
   -p PASSFILE  specify password file
 
 ```
+## Tested on 
+
+Raspberry Pi OS
+
+## Preview
+![Preview Image](./img/preview1.png)
+![Preview Image](./img/preview2.png)
+![Preview Image](./img/preview3.png)
+![Preview Image](./img/preview4.png)
