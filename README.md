@@ -1,10 +1,13 @@
 ## Summary
-	This is simple python FTP password craker. 
+	This is simple python FTP password craker. To crack FTP login using wordlist based brute force attack
 
 <hr>
 
 ## Requriments
-	` pip install ftplib `
+``` 
+pip install ftplib
+pip install -r requirements.txt
+```
 
 <hr>
 
@@ -13,26 +16,30 @@
 ```
 git clone https://github.com/CyberVarun/ftp-craker.git 
 cd ftp-craker
-python3 craker.py 
+python3 craker.py --help 
 ```
+
 ## Usage
+```
+Usage: crack.py [OPTIONS]
+
+  This Simple python FTP cracker to crack FTP login using wordlist based
+  brute force attack.
+
+Options:
+  -s, --server TEXT               Specify Server IP  [required]
+  -u, --user TEXT                 Specify User  [required]
+  -p, --passfile FILENAME         Specify Password File  [required]
+
+  --help                          Show this message and exit.
 
 ```
-usage: crack.py [-h] [-s SERVER] [-u USER] [-p PASSFILE]
 
-optional arguments:
-  -h, --help   show this help message and exit
-  -s SERVER    specify server IP
-  -u USER      specify user
-  -p PASSFILE  specify password file
+![Image](./img/preview1.png)
+![Image](./img/preview2.png)
+![Image](./img/preview3.png)
 
-```
 ## Tested on 
 
-Raspberry Pi OS
-
-## Preview
-![Preview Image](./img/preview1.png)
-![Preview Image](./img/preview2.png)
-![Preview Image](./img/preview3.png)
-![Preview Image](./img/preview4.png)
+Raspberry Pi OS <br>
+Ubuntu (WSL)
