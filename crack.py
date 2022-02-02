@@ -41,7 +41,7 @@ def main(
 	passfile: typer.FileText = typer.Option(..., '--passfile', '-p', help="Specify Password File"),
 ):
 	"""
-	Some desc
+	This Simple python FTP cracker to crack FTP login using wordlist based brute force attack.
 	"""
 	typer.clear()  # clear the screen 
 	# print logo and cretids
