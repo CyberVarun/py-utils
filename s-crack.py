@@ -44,6 +44,10 @@ def main(
 	username: str = typer.Option(..., '--user', '-u', help="Specify username"),
 	passfile: typer.FileText = typer.Option(..., '--passfile', '-p', help="Specify password file"),
 ):
+	
+	'''
+	This Simple python SSH cracker. To crack SSH login using wordlist based brute force attack.
+	'''
 	typer.clear()
 	# print logo and cretids
 	typer.secho(LOGO + VERSION, fg=typer.colors.BRIGHT_CYAN)

@@ -12,6 +12,7 @@ def passcracker(
 	typer.clear()
 
 	for word in wordlist:
+		# Encoding word
 	    enc_wrd = word.encode('utf-8')
 	    digest = hashlib.md5(enc_wrd.strip()).hexdigest()
 	    typer.secho(f"[*] Trying {digest} ==> {word}", fg=typer.colors.GREEN) 
