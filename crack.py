@@ -5,7 +5,6 @@ import paramiko
 import hashlib
 import ftplib
 import socket
-import json
 
 VERSION="0.1"
 
