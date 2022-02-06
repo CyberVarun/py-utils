@@ -4,6 +4,8 @@ import typer
 import paramiko
 import hashlib
 import ftplib
+import socket
+import json
 
 VERSION="0.1"
 
@@ -28,6 +30,8 @@ def pas(
 	    if digest == hash:
 	        typer.secho(f"[*] Password is {word}", fg=typer.colors.BRIGHT_GREEN)
 	        break
+	else:
+		typer.secho("[!] Password not found in wordlist.", fg=typer.colors.RED)
 
 def crack(server, user, passfile):
 	"""
@@ -36,16 +40,20 @@ def crack(server, user, passfile):
 	for password in passfile:
 		try:
 			password = password.strip()
-			typer.secho(f"trying: {password}", fg=typer.colors.GREEN)
+			typer.secho(f"[*] Trying: {password}", fg=typer.colors.GREEN)
 
 			ftp = ftplib.FTP(server)
 			if ftp.login(user, password):
-				typer.secho(f"Password Found: {password}", fg=typer.colors.BRIGHT_GREEN)
+				typer.secho(f"[*] Password Found: {password}", fg=typer.colors.BRIGHT_GREEN)
 				exit() # TODO: use typer.Exit() or typer.Abort() to exit
-
+			else:
+				break
 		except Exception as e:
 			# TODO: handle connection not established
-			typer.secho(f"Login Incorrect", fg=typer.colors.RED)
+			typer.secho(f"[!] Login Incorrect", fg=typer.colors.RED)
+	else:
+		typer.secho(f"[!] Password not found or Connection could not be established.", fg=typer.colors.RED)
+	
 
 @app.command()
 def ftp(
@@ -122,21 +130,20 @@ def ssh(
 	# print logo and cretids
 	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
 	typer.echo(CREDITS)
-	  
-	# Output
+
 	for password in passfile:
 		password = password.strip()
 		try:
 			response = sshconnect(host, username, password)
 			if response == 0:
-				typer.secho(f"[*] User: {username} [*] Password Found {password} [*] Login Correct", fg=typer.colors.BRIGHT_GREEN)
+				typer.secho(f"[*] User: {username} [*] Password Found: {password} [*] Login Correct", fg=typer.colors.BRIGHT_GREEN)
 			elif response == 1:
-				typer.secho(f"[*] User: {username} [*] Password {password} [*] Login Incorrect", fg=typer.colors.YELLOW)
+				typer.secho(f"[*] User: {username} [*] Password: {password} [!] Login Incorrect", fg=typer.colors.BRIGHT_YELLOW)
 			elif response == 2:
-				typer.secho(f"[*] Connection could not be established to address {host}", fg=typer.colors.RED)
-		except Exception as error:
-			print (error)
-			exit()
+				typer.secho(f"[?] Connection could not be established to {host}", fg=typer.colors.RED)
+		except Exception:
+			# print (error)
+			break
 
 if __name__ == "__main__":
 	app()
