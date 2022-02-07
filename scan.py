@@ -7,6 +7,7 @@ import typer
 import os 
 import platform
 import re
+import json
 
 app = typer.Typer()
 
@@ -28,11 +29,64 @@ def scan_host(host, port):
 
 	return code
 
+def create_file(filename):
+	f = open(filename, 'w')
+	f.close()
+
+def write_file(filename, data):
+	f = open(filename, 'a')
+	f.write(data)
+	f.close()
+
+def file_check(filename):
+	try:
+		file = open(filename,'r')
+		file.close()
+		return True
+	except:
+		return False
+
+def data_output(ip, output, data_list2, scn):
+	if scn == 0:
+		data_list1 = {
+			"Network": net
+		}
+
+		data_list1["hosts"] = data_list2
+		data = json.dumps(data_list1, indent=3)
+
+		filename ='{0}net.json'.format(net)
+		
+		if output:
+			if file_check(filename):
+				write_file(filename, data)
+			else:
+				create_file(filename)
+				write_file(filename, data)
+	
+	elif scn == 1:
+		data_list1 = {}
+
+		data_list1[net] = data_list2
+		data = json.dumps(data_list1, indent=3)
+
+		filename ='{0}port.json'.format(net)
+		
+		if output:
+			if file_check(filename):
+				write_file(filename, data)
+			else:
+				create_file(filename)
+				write_file(filename, data)
+
+
+
 @app.command()
 def nscn(
 	net: str = typer.Option(..., '--net', '-n', help="Specify network address."),
 	str_ran: int = typer.Option(..., '--sr', '-sr', help="Specify start of IP range 127.0.0.(range)"), 
-	en_ran: int = typer.Option(..., '--er', '-er', help="Specify ending of IP range 127.0.0.(range)")
+	en_ran: int = typer.Option(..., '--er', '-er', help="Specify ending of IP range 127.0.0.(range)"),
+	output: bool = False,
 ):
 
 	"""
@@ -49,14 +103,20 @@ def nscn(
 	CREDITS = '\033[1;34mCreated by @CyberVarun (https://github.com/CyberVarun)\033[0m'
 
 	# Sorting Given IP 
-	net = net.split('.')
+	netw = net.split('.')
 	a = '.'
-	network = net[0] + a + net[1] + a + net[2] + a
+	network = netw[0] + a + netw[1] + a + netw[2] + a
 
 	en_ran = en_ran + 1
 	
 	# Finding Operating system type 
 	oper = platform.system() 
+	
+	# json_data1 = {
+	# 	"Network": net
+	# }
+
+	data_list2 = {}
 	
 	t1 = datetime.now()
 
@@ -76,6 +136,7 @@ def nscn(
 			ping = "ping -c 1 "
 
 		for ip in range(str_ran, en_ran):
+			global addr
 			addr = network + str(ip) # Adding 127.0.0. + ip(1)
 			command = ping + addr # Command ping -c 1 IP
 			
@@ -88,6 +149,8 @@ def nscn(
 
 			if search:
 				typer.secho(f"[*] {addr} is live", fg=typer.colors.BRIGHT_GREEN)
+				data_list2[addr] = "live"
+				
 			else:
 				typer.secho(f"[!] {addr} is down", fg=typer.colors.RED)
 		
@@ -95,6 +158,8 @@ def nscn(
 		typer.secho(f"[*] Scannig End at {t2}", fg=typer.colors.CYAN)
 		total_time = t2 - t1
 		typer.secho(f"[*] Scannig completed in: {total_time}", fg=typer.colors.CYAN)
+		scn = 0
+		data_output(net, output, data_list2, scn)
 
 	except Exception:
 		# print(error)
@@ -109,6 +174,7 @@ def pscn(
 	host: str = typer.Option(..., '--host', '-h', help="Specify host"),
 	min_port: int = typer.Option(..., '--min', '-mn', help="Specify minimum port"),
 	max_port: int = typer.Option(..., '--max', '-mx', help="Specify maximum port"),
+	output: bool = False,
 ):
 	"""
 	For open port scanning.
@@ -135,12 +201,14 @@ def pscn(
 	typer.secho(f"[*] Scannig Started at {cur_time} \n", fg=typer.colors.CYAN)
 	
 	start_time = datetime.now()
+	data_list2 = {}
 
 	for port in range(min_port, max_port):
 		try:
 			response = scan_host(host, port)
 			if response == 1:
 				typer.secho(f"[*] Port {port} is Open", fg=typer.colors.BRIGHT_GREEN)
+				data_list2[port] = "open" 
 		
 		except Exception:
 			# print(error)
@@ -155,6 +223,8 @@ def pscn(
 
 	typer.secho(f"\n[*] Scannig Finished At {cur_time}", fg=typer.colors.CYAN)
 	typer.secho(f"[*] Scannig Duration {total_time}", fg=typer.colors.CYAN)
+	scn = 1
+	data_output(host, output, data_list2, scn)
 
 if __name__ == "__main__":
 	app()
