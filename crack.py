@@ -6,10 +6,10 @@ import hashlib
 import ftplib
 import socket
 
-VERSION="0.1"
+VERSION="v0.1"
 
 app = typer.Typer()
-CREDITS = '		  	\033[1;34mCreated by @CyberVarun (https://github.com/CyberVarun)\033[0m'
+CREDITS = '		  	Created by @CyberVarun (https://github.com/CyberVarun) '
 
 @app.command()
 def pas(
@@ -74,7 +74,7 @@ def ftp(
 	typer.clear()  # clear the screen 
 	# print logo and cretids
 	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.echo(CREDITS)  
+	typer.secho(CREDITS + VERSION, fg=typer.colors.BRIGHT_CYAN)
 
 	crack(server, user, passfile)
 
@@ -124,7 +124,7 @@ def ssh(
 	typer.clear()
 	# print logo and cretids
 	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.echo(CREDITS)
+	typer.secho(CREDITS + VERSION, fg=typer.colors.BRIGHT_CYAN)
 
 	for password in passfile:
 		password = password.strip()
