@@ -10,8 +10,10 @@ import platform
 import re
 import json
 
+VERSION="v0.1"
+
 app = typer.Typer()
-CREDITS = '		   \033[1;34mCreated by @CyberVarun (https://github.com/CyberVarun)\033[0m'
+CREDITS = '		   Created by @CyberVarun (https://github.com/CyberVarun) '
 
 def scan_host(host, port):
 	try:
@@ -113,7 +115,7 @@ def nscn(
 	typer.clear()
 	# print logo and cretids
 	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.echo(CREDITS)
+	typer.secho(CREDITS + VERSION, fg=typer.colors.BRIGHT_CYAN)
 	typer.secho(f"[*] Scannig Started at {t1}", fg=typer.colors.CYAN)
 
 	try:
@@ -183,7 +185,7 @@ def pscn(
 	typer.clear()
 	# print logo and cretids
 	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.echo(CREDITS)
+	typer.secho(CREDITS + VERSION, fg=typer.colors.BRIGHT_CYAN)
 	
 	typer.secho(f"[*] Host: {host}, IP: {hostip}", fg=typer.colors.CYAN)
 	typer.secho(f"[*] Scannig Started at {cur_time} \n", fg=typer.colors.CYAN)
