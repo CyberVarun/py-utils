@@ -9,6 +9,7 @@ import socket
 VERSION="0.1"
 
 app = typer.Typer()
+CREDITS = '		  	\033[1;34mCreated by @CyberVarun (https://github.com/CyberVarun)\033[0m'
 
 @app.command()
 def pas(
@@ -45,13 +46,12 @@ def crack(server, user, passfile):
 			if ftp.login(user, password):
 				typer.secho(f"[*] Password Found: {password}", fg=typer.colors.BRIGHT_GREEN)
 				exit() # TODO: use typer.Exit() or typer.Abort() to exit
-			else:
-				break
+
 		except Exception as e:
 			# TODO: handle connection not established
 			typer.secho(f"[!] Login Incorrect", fg=typer.colors.RED)
 	else:
-		typer.secho(f"[!] Password not found or Connection could not be established.", fg=typer.colors.RED)
+		typer.secho(f"[!] Password not found in wordlist.", fg=typer.colors.RED)
 	
 
 @app.command()
@@ -70,8 +70,6 @@ def ftp(
 	|  __|    | |  |  ___/| |    |  _  /   / /\ \| |    |  < |  __| |  _  / 
 	| |       | |  | |    | |____| | \ \  / ____ \ |____| . \| |____| | \ \ 
 	|_|       |_|  |_|     \_____|_|  \_\/_/    \_\_____|_|\_\______|_|  \_\ '''
-
-	CREDITS = '		  	\033[1;34mCreated by @CyberVarun (https://github.com/CyberVarun)\033[0m'
 
 	typer.clear()  # clear the screen 
 	# print logo and cretids
@@ -122,8 +120,6 @@ def ssh(
 	  \___ \\___ \|  __  | |    |  _  /   / /\ \| |    |  < |  __| |  _  / 
 	 ____) |___) | |  | | |____| | \ \  / ____ \ |____| . \| |____| | \ \ 
 	|_____/_____/|_|  |_|\_____|_|  \_\/_/    \_\_____|_|\_\______|_|  \_\ '''
-
-	CREDITS = '		  \033[1;34mCreated by @CyberVarun (https://github.com/CyberVarun)\033[0m'
 	
 	typer.clear()
 	# print logo and cretids
