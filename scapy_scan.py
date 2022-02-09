@@ -8,7 +8,7 @@ import scan
 VERSION="v0.1"
 CREDITS = '		   Created by @CyberVarun (https://github.com/CyberVarun) '
 
-app = typer.Typer()
+app = typer.Typer(add_completion=False)
 
 @app.command()
 def nscn(
@@ -125,6 +125,3 @@ def dos(
 	except KeyboardInterrupt:
 		typer.secho("[!] Keyboard Interrupt", fg=typer.colors.RED)
 		exit()
-
-if __name__ == "__main__":
-	app()

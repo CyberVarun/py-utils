@@ -8,7 +8,7 @@ import socket
 
 VERSION="v0.1"
 
-app = typer.Typer()
+app = typer.Typer(add_completion=False)
 CREDITS = '		  	Created by @CyberVarun (https://github.com/CyberVarun) '
 
 @app.command()
@@ -140,6 +140,3 @@ def ssh(
 		except Exception:
 			# print (error)
 			break
-
-if __name__ == "__main__":
-	app()

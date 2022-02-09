@@ -12,7 +12,7 @@ import json
 
 VERSION="v0.1"
 
-app = typer.Typer()
+app = typer.Typer(add_completion=False)
 CREDITS = '		   Created by @CyberVarun (https://github.com/CyberVarun) '
 
 def scan_host(host, port):
@@ -215,6 +215,3 @@ def pscn(
 	typer.secho(f"[*] Scannig Duration {total_time}", fg=typer.colors.CYAN)
 	scn = 1
 	data_output(host, output, data_list2, scn)
-
-if __name__ == "__main__":
-	app()
