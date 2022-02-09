@@ -2,6 +2,7 @@
 
 import socket
 from datetime import datetime
+from pathlib import Path
 import time
 import typer
 import os 
@@ -9,7 +10,10 @@ import platform
 import re
 import json
 
-app = typer.Typer()
+VERSION="v0.1"
+
+app = typer.Typer(add_completion=False)
+CREDITS = '		   Created by @CyberVarun (https://github.com/CyberVarun) '
 
 def scan_host(host, port):
 	try:
@@ -23,42 +27,34 @@ def scan_host(host, port):
 			code = 1
 		s.close()
 
-	except Exception:
+	except Exception as error:
 		# print(error)
 		pass
 
 	return code
 
 def create_file(filename):
-	f = open(filename, 'w')
-	f.close()
+	with open(filename, 'w') as f:
+		pass
 
 def write_file(filename, data):
-	f = open(filename, 'a')
-	f.write(data)
-	f.close()
-
-def file_check(filename):
-	try:
-		file = open(filename,'r')
-		file.close()
-		return True
-	except:
-		return False
+	with open(filename, 'a') as f:
+		f.write(data)
 
 def data_output(ip, output, data_list2, scn):
 	if scn == 0:
 		data_list1 = {
-			"Network": net
+			"Network": ip
 		}
 
 		data_list1["hosts"] = data_list2
 		data = json.dumps(data_list1, indent=3)
 
-		filename ='{0}net.json'.format(net)
+		filename ='{0}net.json'.format(ip)
 		
 		if output:
-			if file_check(filename):
+			file = Path(filename)
+			if file.exists():
 				write_file(filename, data)
 			else:
 				create_file(filename)
@@ -67,13 +63,14 @@ def data_output(ip, output, data_list2, scn):
 	elif scn == 1:
 		data_list1 = {}
 
-		data_list1[net] = data_list2
+		data_list1[ip] = data_list2
 		data = json.dumps(data_list1, indent=3)
 
-		filename ='{0}port.json'.format(net)
+		filename ='{0}port.json'.format(ip)
 		
 		if output:
-			if file_check(filename):
+			file = Path(filename)
+			if file.exists():
 				write_file(filename, data)
 			else:
 				create_file(filename)
@@ -94,13 +91,12 @@ def nscn(
 	"""
 
 	LOGO='''
-   _   _      _          _____                 
-  | \ | |    | |        / ____|                
-  |  \| | ___| |_ _____| (___   ___ __ _ _ __  
-  | . ` |/ _ \ __|______\___ \ / __/ _` | '_ \ 
-  | |\  |  __/ |_       ____) | (_| (_| | | | |
-  |_| \_|\___|\__|     |_____/ \___\__,_|_| |_|'''
-	CREDITS = '\033[1;34mCreated by @CyberVarun (https://github.com/CyberVarun)\033[0m'
+  			 _   _      _          _____                 
+  			| \ | |    | |        / ____|                
+ 			|  \| | ___| |_ _____| (___   ___ __ _ _ __  
+ 			| . ` |/ _ \ __|______\___ \ / __/ _` | '_ \ 
+  			| |\  |  __/ |_       ____) | (_| (_| | | | |
+  			|_| \_|\___|\__|     |_____/ \___\__,_|_| |_|'''
 
 	# Sorting Given IP 
 	netw = net.split('.')
@@ -111,10 +107,6 @@ def nscn(
 	
 	# Finding Operating system type 
 	oper = platform.system() 
-	
-	# json_data1 = {
-	# 	"Network": net
-	# }
 
 	data_list2 = {}
 	
@@ -123,7 +115,7 @@ def nscn(
 	typer.clear()
 	# print logo and cretids
 	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.echo(CREDITS)
+	typer.secho(CREDITS + VERSION, fg=typer.colors.BRIGHT_CYAN)
 	typer.secho(f"[*] Scannig Started at {t1}", fg=typer.colors.CYAN)
 
 	try:
@@ -161,7 +153,7 @@ def nscn(
 		scn = 0
 		data_output(net, output, data_list2, scn)
 
-	except Exception:
+	except Exception as error:
 		# print(error)
 		pass
 
@@ -187,15 +179,13 @@ def pscn(
 	| |  | (_) | |  | |_       ____) | (_| (_| | | | | | | |  __/ |   
 	|_|   \___/|_|   \__|     |_____/ \___\__,_|_| |_|_| |_|\___|_| '''
 
-	CREDITS = '		  \033[1;34mCreated by @CyberVarun (https://github.com/CyberVarun)\033[0m'
-
 	cur_time = time.strftime("%H:%M:%S")
 	hostip = socket.gethostbyname(host) # To get host IP
 
 	typer.clear()
 	# print logo and cretids
 	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.echo(CREDITS)
+	typer.secho(CREDITS + VERSION, fg=typer.colors.BRIGHT_CYAN)
 	
 	typer.secho(f"[*] Host: {host}, IP: {hostip}", fg=typer.colors.CYAN)
 	typer.secho(f"[*] Scannig Started at {cur_time} \n", fg=typer.colors.CYAN)
@@ -210,7 +200,7 @@ def pscn(
 				typer.secho(f"[*] Port {port} is Open", fg=typer.colors.BRIGHT_GREEN)
 				data_list2[port] = "open" 
 		
-		except Exception:
+		except Exception as error:
 			# print(error)
 			pass
 
@@ -225,6 +215,3 @@ def pscn(
 	typer.secho(f"[*] Scannig Duration {total_time}", fg=typer.colors.CYAN)
 	scn = 1
 	data_output(host, output, data_list2, scn)
-
-if __name__ == "__main__":
-	app()

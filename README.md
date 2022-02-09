@@ -1,3 +1,9 @@
+# Disclaimer
+
+This tool is for Educational purpose only. We do not promote or encourage any illegal activities.
+
+<hr>
+
 ## Summary
 
 These are Simple python scripts to test/scan your network.
@@ -10,66 +16,31 @@ These are Simple python scripts to test/scan your network.
 git clone https://github.com/CyberVarun/py-utils.git 
 cd py-utils
 sudo ./install.sh
-python3 crack.py/scan.py --help 
+python3 main.py --help 
 ```
 <hr>
-
-## Crack.py
-
-Using crack.py you can brute force [wordlist based] of FTP, SSH Login & md5 hash. Crack.py support proxychains, means you can brute force online FTP & SSH login anonymously. For more details see the given images.
 
 #### Usage
 
 ```
-Usage: crack.py [OPTIONS] COMMAND [ARGS]...
+Usage: main.py [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --install-completion [bash|zsh|fish|powershell|pwsh]
-                                  Install completion for the specified shell.
-  --show-completion [bash|zsh|fish|powershell|pwsh]
-                                  Show completion for the specified shell, to
-                                  copy it or customize the installation.
-
-  --help                          Show this message and exit.
+  --help  Show this message and exit.
 
 Commands:
-  ftp  To crack FTP login using wordlist based brute force attack.
-  pas  To crack md5 hashes.
-  ssh  To crack SSH login using wordlist based brute force attack.
+  crack   Set of tools to crack FTP, SSH login and md5 hash.
+  scapy   Set of tools to scan/test network (using scapy module).
+  socket  Set of tools to scan/test network (using socket module).
 
 ```
+
 ##### SSH
 ![Image](./assests/ssh1.png)
 ![Image](./assests/ssh2.png)
 ##### FTP
 ![Image](./assests/ftp1.png)
 ![Image](./assests/ftp2.png)
-<hr>
-
-## Scan.py
-
-Using scan.py you can scan your network and systems open ports.
-
-#### Usage
-
-```
-Usage: scan.py [OPTIONS] COMMAND [ARGS]...
-
-Options:
-  --install-completion [bash|zsh|fish|powershell|pwsh]
-                                  Install completion for the specified shell.
-  --show-completion [bash|zsh|fish|powershell|pwsh]
-                                  Show completion for the specified shell, to
-                                  copy it or customize the installation.
-
-  --help                          Show this message and exit.
-
-Commands:
-  nscn  For detecting active machines network.
-  pscn  For open port scanning.
-
-```
-
 <hr>
 
 ## Rockyou.txt

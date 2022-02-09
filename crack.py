@@ -6,9 +6,10 @@ import hashlib
 import ftplib
 import socket
 
-VERSION="0.1"
+VERSION="v0.1"
 
-app = typer.Typer()
+app = typer.Typer(add_completion=False)
+CREDITS = '		  	Created by @CyberVarun (https://github.com/CyberVarun) '
 
 @app.command()
 def pas(
@@ -45,13 +46,12 @@ def crack(server, user, passfile):
 			if ftp.login(user, password):
 				typer.secho(f"[*] Password Found: {password}", fg=typer.colors.BRIGHT_GREEN)
 				exit() # TODO: use typer.Exit() or typer.Abort() to exit
-			else:
-				break
+
 		except Exception as e:
 			# TODO: handle connection not established
 			typer.secho(f"[!] Login Incorrect", fg=typer.colors.RED)
 	else:
-		typer.secho(f"[!] Password not found or Connection could not be established.", fg=typer.colors.RED)
+		typer.secho(f"[!] Password not found in wordlist.", fg=typer.colors.RED)
 	
 
 @app.command()
@@ -71,12 +71,10 @@ def ftp(
 	| |       | |  | |    | |____| | \ \  / ____ \ |____| . \| |____| | \ \ 
 	|_|       |_|  |_|     \_____|_|  \_\/_/    \_\_____|_|\_\______|_|  \_\ '''
 
-	CREDITS = '		  	\033[1;34mCreated by @CyberVarun (https://github.com/CyberVarun)\033[0m'
-
 	typer.clear()  # clear the screen 
 	# print logo and cretids
 	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.echo(CREDITS)  
+	typer.secho(CREDITS + VERSION, fg=typer.colors.BRIGHT_CYAN)
 
 	crack(server, user, passfile)
 
@@ -122,13 +120,11 @@ def ssh(
 	  \___ \\___ \|  __  | |    |  _  /   / /\ \| |    |  < |  __| |  _  / 
 	 ____) |___) | |  | | |____| | \ \  / ____ \ |____| . \| |____| | \ \ 
 	|_____/_____/|_|  |_|\_____|_|  \_\/_/    \_\_____|_|\_\______|_|  \_\ '''
-
-	CREDITS = '		  \033[1;34mCreated by @CyberVarun (https://github.com/CyberVarun)\033[0m'
 	
 	typer.clear()
 	# print logo and cretids
 	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.echo(CREDITS)
+	typer.secho(CREDITS + VERSION, fg=typer.colors.BRIGHT_CYAN)
 
 	for password in passfile:
 		password = password.strip()
@@ -144,6 +140,3 @@ def ssh(
 		except Exception:
 			# print (error)
 			break
-
-if __name__ == "__main__":
-	app()
