@@ -28,8 +28,7 @@ def scan_host(host, port):
 		s.close()
 
 	except Exception as error:
-		# print(error)
-		pass
+		typer.secho(f"{error}", fg=typer.colors.RED)
 
 	return code
 
@@ -154,8 +153,7 @@ def nscn(
 		data_output(net, output, data_list2, scn)
 
 	except Exception as error:
-		# print(error)
-		pass
+		typer.secho(f"{error}", fg=typer.colors.RED)
 
 	except KeyboardInterrupt:
 		typer.secho("\n[!] Keyboard Interrupt", fg=typer.colors.RED)
@@ -201,8 +199,7 @@ def pscn(
 				data_list2[port] = "open" 
 		
 		except Exception as error:
-			# print(error)
-			pass
+			typer.secho(f"{error}", fg=typer.colors.RED)
 
 		except KeyboardInterrupt:
 			typer.secho("\n[!] Keyboard Interrupt", fg=typer.colors.RED)
