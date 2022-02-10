@@ -137,6 +137,8 @@ def ssh(
 				typer.secho(f"[*] User: {username} [*] Password: {password} [!] Login Incorrect", fg=typer.colors.BRIGHT_YELLOW)
 			elif response == 2:
 				typer.secho(f"[?] Connection could not be established to {host}", fg=typer.colors.RED)
-		except Exception:
-			# print (error)
-			break
+		except Exception as error:
+			typer.secho(f"{error}", fg=typer.colors.RED)
+
+		except KeyboardInterrupt:
+			typer.secho("[!] Keyboard Interrupt", fg=typer.colors.RED)

@@ -51,9 +51,8 @@ def nscn(
 			data_list2[addr[1].psrc] = "live"
 	
 	except Exception as error:
-		# print(error)
-		pass
-	
+		typer.secho(f"{error}", fg=typer.colors.RED)
+
 	except KeyboardInterrupt:
 		typer.secho("[!] Keyboard Interrupt", fg=typer.colors.RED)
 		exit()
@@ -92,8 +91,7 @@ def sniffer(
 			s.summary()
 
 	except Exception as error:
-		# print(error)
-		pass
+		typer.secho(f"{error}", fg=typer.colors.RED)
 
 	except KeyboardInterrupt:
 		typer.secho("[!] Keyboard Interrupt", fg=typer.colors.RED)
@@ -119,8 +117,7 @@ def dos(
 			send(IP(src=source, dst=target)/TCP(sport=sport, dport=dport),count=count)
 
 	except Exception as error:
-		# print(error)
-		pass
+		typer.secho(f"{error}", fg=typer.colors.RED)
 
 	except KeyboardInterrupt:
 		typer.secho("[!] Keyboard Interrupt", fg=typer.colors.RED)
