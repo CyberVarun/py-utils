@@ -13,9 +13,8 @@ These are Simple python scripts to test/scan your network.
 ## Installation
 
 ```
-git clone https://github.com/CyberVarun/py-utils.git 
-cd py-utils
-sudo ./install.sh
+curl https://raw.githubusercontent.com/CyberVarun/py-utils/main/install.sh | bash
+cd py-utils/
 python3 main.py --help 
 ```
 <hr>
