@@ -12,7 +12,7 @@ These are Simple python scripts to test/scan your network.
 
 ## Installation
 
-```
+```bash
 curl https://raw.githubusercontent.com/CyberVarun/py-utils/main/install.sh | bash
 cd py-utils/
 python3 main.py --help 
@@ -21,7 +21,7 @@ python3 main.py --help
 
 #### Usage
 
-```
+```python
 Usage: main.py [OPTIONS] COMMAND [ARGS]...
 
 Options:
