@@ -4,9 +4,7 @@ from scapy.all import *
 from typing import Optional
 import typer
 import scan
-
-VERSION="v0.1"
-CREDITS = '		   Created by @CyberVarun (https://github.com/CyberVarun) '
+import display
 
 app = typer.Typer(add_completion=False)
 
@@ -19,14 +17,6 @@ def nscn(
 	"""
 	To scan network using scapy module.
 	"""
-	LOGO='''
-			 _   _      _          _____                 
-			| \ | |    | |        / ____|                
-			|  \| | ___| |_ _____| (___   ___ __ _ _ __  
-			| . ` |/ _ \ __|______\___ \ / __/ _` | '_ \ 
-			| |\  |  __/ |_       ____) | (_| (_| | | | |
-			|_| \_|\___|\__|     |_____/ \___\__,_|_| |_|'''
-
 	# Specifying the network range IP/rang. Defautl is IP/24 (127.0.0.1/24). 
 	if rang is None: 
 		network = net + "/24"
@@ -37,9 +27,8 @@ def nscn(
 	data_list2 = {}
 
 	# Printing Logo, creadits and version
-	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.secho(f"{CREDITS}{VERSION}\n", fg=typer.colors.BRIGHT_CYAN)
-	
+	display.credits(display.NETSCAN)
+
 	try:
 		# Broadcasting ARP (Address Resolution Protocol) requestest into network.
 		addresses = srp(Ether(dst='ff:ff:ff:ff:ff:ff')/ARP(pdst=network), timeout=1, verbose=False)[0]
@@ -121,4 +110,4 @@ def dos(
 
 	except KeyboardInterrupt:
 		typer.secho("[!] Keyboard Interrupt", fg=typer.colors.RED)
-		exit()
+		raise typer.Exit()

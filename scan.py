@@ -9,11 +9,9 @@ import os
 import platform
 import re
 import json
-
-VERSION="v0.1"
+import display
 
 app = typer.Typer(add_completion=False)
-CREDITS = '		   Created by @CyberVarun (https://github.com/CyberVarun) '
 
 def scan_host(host, port):
 	try:
@@ -21,10 +19,7 @@ def scan_host(host, port):
 		target = socket.gethostbyname(host)
 
 		# checking connection (True/False).
-		if s.connect((target, port)):
-			code = 0
-		else:
-			code = 1
+		code = 0 if s.connect((target, port)) else 1
 		s.close()
 
 	except Exception as error:
@@ -88,15 +83,6 @@ def nscn(
 	"""
 	For detecting active machines network. 
 	"""
-
-	LOGO='''
-  			 _   _      _          _____                 
-  			| \ | |    | |        / ____|                
- 			|  \| | ___| |_ _____| (___   ___ __ _ _ __  
- 			| . ` |/ _ \ __|______\___ \ / __/ _` | '_ \ 
-  			| |\  |  __/ |_       ____) | (_| (_| | | | |
-  			|_| \_|\___|\__|     |_____/ \___\__,_|_| |_|'''
-
 	# Sorting Given IP 
 	netw = net.split('.')
 	a = '.'
@@ -111,10 +97,7 @@ def nscn(
 	
 	t1 = datetime.now()
 
-	typer.clear()
-	# print logo and cretids
-	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.secho(CREDITS + VERSION, fg=typer.colors.BRIGHT_CYAN)
+	display.credits(display.NETSCAN)
 	typer.secho(f"[*] Scannig Started at {t1}", fg=typer.colors.CYAN)
 
 	try:
@@ -169,21 +152,10 @@ def pscn(
 	"""
 	For open port scanning.
 	"""
-	LOGO='''
-	 _____           _          _____                                 
-	|  __ \         | |        / ____|                                
-	| |__) |__  _ __| |_ _____| (___   ___ __ _ _ __  _ __   ___ _ __ 
-	|  ___/ _ \| '__| __|______\___ \ / __/ _` | '_ \| '_ \ / _ \ '__|
-	| |  | (_) | |  | |_       ____) | (_| (_| | | | | | | |  __/ |   
-	|_|   \___/|_|   \__|     |_____/ \___\__,_|_| |_|_| |_|\___|_| '''
-
 	cur_time = time.strftime("%H:%M:%S")
 	hostip = socket.gethostbyname(host) # To get host IP
 
-	typer.clear()
-	# print logo and cretids
-	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.secho(CREDITS + VERSION, fg=typer.colors.BRIGHT_CYAN)
+	display.credits(display.PORTSCANNER)
 	
 	typer.secho(f"[*] Host: {host}, IP: {hostip}", fg=typer.colors.CYAN)
 	typer.secho(f"[*] Scannig Started at {cur_time} \n", fg=typer.colors.CYAN)

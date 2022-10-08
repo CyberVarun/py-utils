@@ -5,11 +5,9 @@ import paramiko
 import hashlib
 import ftplib
 import socket
-
-VERSION="v0.1"
+import display
 
 app = typer.Typer(add_completion=False)
-CREDITS = '		  	Created by @CyberVarun (https://github.com/CyberVarun) '
 
 @app.command()
 def pas(
@@ -23,19 +21,19 @@ def pas(
 
 	for word in wordlist:
 		# Encoding word
-	    enc_wrd = word.encode('utf-8')
-	    digest = hashlib.md5(enc_wrd.strip()).hexdigest()
-	    typer.secho(f"[*] Trying {digest} ==> {word}", fg=typer.colors.GREEN) 
+		enc_wrd = word.encode('utf-8')
+		digest = hashlib.md5(enc_wrd.strip()).hexdigest()
+		typer.secho(f"[*] Trying {digest} ==> {word}", fg=typer.colors.GREEN) 
 
-	    if digest == hash:
-	        typer.secho(f"[*] Password is {word}", fg=typer.colors.BRIGHT_GREEN)
-	        break
+		if digest == hash:
+			typer.secho(f"[*] Password is {word}", fg=typer.colors.BRIGHT_GREEN)
+			break
 	else:
 		typer.secho("[!] Password not found in wordlist.", fg=typer.colors.RED)
 
 def crack(server, user, passfile):
 	"""
-	# TODO: write docstring
+	To check if a password exists in the passfile which is correct
 	"""
 	for password in passfile:
 		try:
@@ -45,7 +43,7 @@ def crack(server, user, passfile):
 			typer.secho(f"[*] Trying: {password}", fg=typer.colors.GREEN)
 			if ftp.login(user, password):
 				typer.secho(f"[*] Password Found: {password}", fg=typer.colors.BRIGHT_GREEN)
-				exit() # TODO: use typer.Exit() or typer.Abort() to exit
+				raise typer.Exit()
 
 		except Exception as e:
 			# TODO: handle connection not established
@@ -63,19 +61,8 @@ def ftp(
 	"""
 	To crack FTP login using wordlist based brute force attack.
 	"""
-	LOGO = '''
-	 ______ _______ _____   _____ _____            _____ _  ________ _____  
-	|  ____|__   __|  __ \ / ____|  __ \     /\   / ____| |/ /  ____|  __ \ 
-	| |__     | |  | |__) | |    | |__) |   /  \ | |    | ' /| |__  | |__) |
-	|  __|    | |  |  ___/| |    |  _  /   / /\ \| |    |  < |  __| |  _  / 
-	| |       | |  | |    | |____| | \ \  / ____ \ |____| . \| |____| | \ \ 
-	|_|       |_|  |_|     \_____|_|  \_\/_/    \_\_____|_|\_\______|_|  \_\ '''
 
-	typer.clear()  # clear the screen 
-	# print logo and cretids
-	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.secho(CREDITS + VERSION, fg=typer.colors.BRIGHT_CYAN)
-
+	display.credits(display.FTPCRACKER)
 	crack(server, user, passfile)
 
 def sshconnect(host, username, password, code = 0):
@@ -112,20 +99,8 @@ def ssh(
 	"""
 	To crack SSH login using wordlist based brute force attack.
 	"""
-
-	LOGO = '''
-	  _____ _____ _    _  _____ _____            _____ _  ________ _____  
-	 / ____/ ____| |  | |/ ____|  __ \     /\   / ____| |/ /  ____|  __ \ 
-	| (___| (___ | |__| | |    | |__) |   /  \ | |    | ' /| |__  | |__) |
-	  \___ \\___ \|  __  | |    |  _  /   / /\ \| |    |  < |  __| |  _  / 
-	 ____) |___) | |  | | |____| | \ \  / ____ \ |____| . \| |____| | \ \ 
-	|_____/_____/|_|  |_|\_____|_|  \_\/_/    \_\_____|_|\_\______|_|  \_\ '''
+	display.credits(display.SSHCRACKER)
 	
-	typer.clear()
-	# print logo and cretids
-	typer.secho(LOGO, fg=typer.colors.BRIGHT_CYAN)
-	typer.secho(CREDITS + VERSION, fg=typer.colors.BRIGHT_CYAN)
-
 	for password in passfile:
 		password = password.strip()
 		try:
