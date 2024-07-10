@@ -1,3 +1,4 @@
 paramiko==2.9.2
 scapy==2.4.5
 typer==0.4.0
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
